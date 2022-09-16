@@ -11,18 +11,13 @@ from scipy.stats import skew,kurtosis
 import pylab as py
 
 df = pd.read_csv("heart.csv")
+print(df.head())
 
 # View Dimensions Of Dataset
 print(df.shape)
 
-# Preview The Dataset
-print(df.head())
-print(df.info())
-
-# Check for Null values
-print(df.notnull().count())
-
 # Print Dataset Info
+print(df.info())
 print("Dataset Info:")
 print("Total Rows: ", df.shape[0])
 print("Total Column: ", df.shape[1])
@@ -31,23 +26,34 @@ print("Total Column: ", df.shape[1])
 data = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'ca', 'thal']
 df[data] = df[data].astype(object)
 
+# Clean The Dataset
+# Check for Null values
+print(df.notnull().count())
+# change values of column "ca" from 0 - 4 to 0 - 3
+df.loc[df["ca"] == 4, "ca"] = np.NaN
+df["ca"].unique()
+# change values of column "thal" from 0 - 3 to 1 - 3
+df.loc[df["thal"] == 0, "thal"] = np.NaN
+df[df["thal"] == 0]
+df["thal"].unique()
+
 # Data Exploration
 
 # GENDER
 labels = ['Male', 'Female']
-colors = ["#CD919E", "#CDC9C9"]
+colors = ["#00008B", "#C1CDCD"]
 order = df['sex'].value_counts().index
 plt.figure(figsize = (12, 12))
 plt.suptitle('Gender Distribution', fontweight = 'heavy', fontsize = '16',
             fontfamily = 'sans-serif', color = "black")
-
+# Pie Chart
 plt.subplot(1, 2, 1)
 plt.title('Pie Chart', fontweight = 'bold', fontfamily = "sans-serif", color = 'black')
 plt.pie(df["sex"].value_counts(), pctdistance = 0.7, autopct = '%.2f%%', labels = labels,
 wedgeprops = dict(alpha = 0.8, edgecolor = "black"), textprops = {'fontsize': 12}, colors = colors)
 centre = plt.Circle((0,0), 0.45, fc = "white", edgecolor = "black")
 plt.gcf().gca().add_artist(centre)
-
+# Histogram
 countplt = plt.subplot(1, 2, 2)
 plt.title("Histogram", fontweight = "bold", fontsize = 14, 
         fontfamily = "sans-serif", color = 'black')
@@ -58,7 +64,7 @@ for rect in ax.patches:
     linewidth = 0.25, boxstyle = "round"))
 plt.xlabel("Gender", fontweight = "bold", fontsize = 11, fontfamily = "sans-serif", color = "black")
 plt.ylabel("Total", fontweight = "bold", fontsize = 11, fontfamily = "sans-serif", color = "black")
-plt.xticks([0, 1])
+plt.xticks([0, 1], labels)
 plt.grid(axis = "y", alpha = 0.4)
 plt.show()
 # Count Categorical Labels without counting null values
@@ -66,20 +72,20 @@ print("Sex Total:")
 print(df.sex.value_counts(dropna = False))
 
 # CHEST PAIN TYPE
-labels = ['Type 0', 'Type 2', 'Type 1', 'Type 3']
+labels = ['Asymptomatic', 'Non-Anginal Pain', 'Atypical Angina', 'Typical Angina']
 colors = ["#6495ED", "#1874CD", "#009ACD", "#00688B"]
 order = df['cp'].value_counts().index
-plt.figure(figsize = (12, 12))
+plt.figure(figsize = (16, 8))
 plt.suptitle('Chest Pain Type Distribution', fontweight = 'heavy', fontsize = '16',
             fontfamily = 'sans-serif', color = "black")
-
+# Pie Chart
 plt.subplot(1, 2, 1)
 plt.title('Pie Chart', fontweight = 'bold', fontfamily = "sans-serif", color = 'black')
 plt.pie(df["cp"].value_counts(), pctdistance = 0.7, autopct = '%.2f%%', labels = labels,
 wedgeprops = dict(alpha = 0.8, edgecolor = "black"), textprops = {'fontsize': 12}, colors = colors)
 centre = plt.Circle((0,0), 0.45, fc = "white", edgecolor = "black")
 plt.gcf().gca().add_artist(centre)
-
+# Histogram
 countplt = plt.subplot(1, 2, 2)
 plt.title("Histogram", fontweight = "bold", fontsize = 14, 
         fontfamily = "sans-serif", color = 'black')
@@ -137,14 +143,14 @@ order = df['restecg'].value_counts().index
 plt.figure(figsize = (12, 12))
 plt.suptitle('Resting Electrocardiographic Distribution', fontweight = 'heavy', fontsize = '16',
             fontfamily = 'sans-serif', color = "black")
-
+# Pie Chart
 plt.subplot(1, 2, 1)
 plt.title('Pie Chart', fontweight = 'bold', fontfamily = "sans-serif", color = 'black')
 plt.pie(df["restecg"].value_counts(), pctdistance = 0.7, autopct = '%.2f%%', labels = labels,
 wedgeprops = dict(alpha = 0.8, edgecolor = "black"), textprops = {'fontsize': 12}, colors = colors)
 centre = plt.Circle((0,0), 0.45, fc = "white", edgecolor = "black")
 plt.gcf().gca().add_artist(centre)
-
+# Histogram
 countplt = plt.subplot(1, 2, 2)
 plt.title("Histogram", fontweight = "bold", fontsize = 14, 
         fontfamily = "sans-serif", color = 'black')
@@ -169,14 +175,14 @@ order = df['exang'].value_counts().index
 plt.figure(figsize = (12, 12))
 plt.suptitle('Exercise Induced Angina Distribution', fontweight = 'heavy', fontsize = '16',
             fontfamily = 'sans-serif', color = "black")
-
+# Pie Chart
 plt.subplot(1, 2, 1)
 plt.title('Pie Chart', fontweight = 'bold', fontfamily = "sans-serif", color = 'black')
 plt.pie(df["exang"].value_counts(), pctdistance = 0.7, autopct = '%.2f%%', labels = labels,
 wedgeprops = dict(alpha = 0.8, edgecolor = "black"), textprops = {'fontsize': 12}, colors = colors)
 centre = plt.Circle((0,0), 0.45, fc = "white", edgecolor = "black")
 plt.gcf().gca().add_artist(centre)
-
+# Histogram
 countplt = plt.subplot(1, 2, 2)
 plt.title("Histogram", fontweight = "bold", fontsize = 14, 
         fontfamily = "sans-serif", color = 'black')
@@ -196,20 +202,20 @@ print("Exercise Induced Angina Total:")
 print(df.exang.value_counts(dropna = False))
 
 # Slope Of The Peak Exercise
-labels = ['1', '2', '0']
+labels = ['Flat', 'Upsloping', 'Downsloping']
 colors = ["#CD2626", "#8B1A1A", "#FF7D40"]
 order = df['slope'].value_counts().index
-plt.figure(figsize = (12, 12))
+plt.figure(figsize = (16, 8))
 plt.suptitle('Slope Of The Peak Exercise Distribution', fontweight = 'heavy', fontsize = '16',
             fontfamily = 'sans-serif', color = "black")
-
+# Pie Chart
 plt.subplot(1, 2, 1)
 plt.title('Pie Chart', fontweight = 'bold', fontfamily = "sans-serif", color = 'black')
 plt.pie(df["slope"].value_counts(), pctdistance = 0.7, autopct = '%.2f%%', labels = labels,
 wedgeprops = dict(alpha = 0.8, edgecolor = "black"), textprops = {'fontsize': 12}, colors = colors)
 centre = plt.Circle((0,0), 0.45, fc = "white", edgecolor = "black")
 plt.gcf().gca().add_artist(centre)
-
+# Histogram
 countplt = plt.subplot(1, 2, 2)
 plt.title("Histogram", fontweight = "bold", fontsize = 14, 
         fontfamily = "sans-serif", color = 'black')
@@ -227,20 +233,20 @@ print("Slope Total:")
 print(df.slope.value_counts(dropna = False))
 
 # Number Of Major Vessels
-labels = ['0', '1', '2', '3', '4']
-colors = ["#8B7D6B", "#000000", "#CDB79E", "#FFE4C4", "#CDC0B0"]
+labels = ['0', '1', '2', '3']
+colors = ["#8B7D6B", "#000000", "#CDB79E", "#FFE4C4"]
 order = df['ca'].value_counts().index
 plt.figure(figsize = (12, 12))
 plt.suptitle('Number Of Major Vessels Distribution', fontweight = 'heavy', fontsize = '16',
             fontfamily = 'sans-serif', color = "black")
-
+# Pie Chart
 plt.subplot(1, 2, 1)
 plt.title('Pie Chart', fontweight = 'bold', fontfamily = "sans-serif", color = 'black')
 plt.pie(df["ca"].value_counts(), pctdistance = 0.7, autopct = '%.2f%%', labels = labels,
 wedgeprops = dict(alpha = 0.8, edgecolor = "black"), textprops = {'fontsize': 12}, colors = colors)
 centre = plt.Circle((0,0), 0.45, fc = "white", edgecolor = "black")
 plt.gcf().gca().add_artist(centre)
-
+# Histogram
 countplt = plt.subplot(1, 2, 2)
 plt.title("Histogram", fontweight = "bold", fontsize = 14, 
         fontfamily = "sans-serif", color = 'black')
@@ -259,20 +265,20 @@ print("Number Of Major Vessels Total:")
 print(df.ca.value_counts(dropna = False))
 
 # Thal Distribution
-labels = ['2', '3', '1', '0']
-colors = ["#FF4040", "#8B2323", "#8A360F", "#8B3E2F"]
+labels = ['Fixed Defect', 'Reversible Defect', 'Normal']
+colors = ["#FF4040", "#8B2323", "#8A360F"]
 order = df['thal'].value_counts().index
-plt.figure(figsize = (12, 12))
+plt.figure(figsize = (16, 8))
 plt.suptitle('Thal Distribution', fontweight = 'heavy', fontsize = '16',
             fontfamily = 'sans-serif', color = "black")
-
+# Pie Chart
 plt.subplot(1, 2, 1)
 plt.title('Pie Chart', fontweight = 'bold', fontfamily = "sans-serif", color = 'black')
 plt.pie(df["thal"].value_counts(), pctdistance = 0.7, autopct = '%.2f%%', labels = labels,
 wedgeprops = dict(alpha = 0.8, edgecolor = "black"), textprops = {'fontsize': 12}, colors = colors)
 centre = plt.Circle((0,0), 0.45, fc = "white", edgecolor = "black")
 plt.gcf().gca().add_artist(centre)
-
+# Histogram
 countplt = plt.subplot(1, 2, 2)
 plt.title("Histogram", fontweight = "bold", fontsize = 14, 
         fontfamily = "sans-serif", color = 'black')
@@ -296,14 +302,14 @@ order = df['target'].value_counts().index
 plt.figure(figsize = (12, 12))
 plt.suptitle('Heart Disease Status Distribution', fontweight = 'heavy', fontsize = '16',
             fontfamily = 'sans-serif', color = "black")
-
+# Pie Chart
 plt.subplot(1, 2, 1)
 plt.title('Pie Chart', fontweight = 'bold', fontfamily = "sans-serif", color = 'black')
 plt.pie(df["target"].value_counts(), pctdistance = 0.7, autopct = '%.2f%%', labels = labels,
 wedgeprops = dict(alpha = 0.8, edgecolor = "black"), textprops = {'fontsize': 12}, colors = colors)
 centre = plt.Circle((0,0), 0.45, fc = "white", edgecolor = "black")
 plt.gcf().gca().add_artist(centre)
-
+# Histogram
 countplt = plt.subplot(1, 2, 2)
 plt.title("Histogram", fontweight = "bold", fontsize = 14, 
         fontfamily = "sans-serif", color = 'black')
@@ -348,11 +354,12 @@ plt.title("Box Plot", fontweight = "bold", fontsize = 14, fontfamily = 'sans-ser
 sns.boxplot(data = df, y = 'age',  linewidth = 1.5, boxprops = dict(alpha = 0.8), color = "#104E8B")
 plt.ylabel('Age', fontweight = 'regular', fontsize = 11, fontfamily = 'sans-serif', color = "black")
 plt.show()
-# Min, Max And Average Values
+# Min, Max, Mean and Median Values
 print('The Minumum, Maximum And Average Values: ')
 print("Minimum: ", min(df.age))
 print("Maximum: ", max(df.age))
 print("Average: ", df.age.mean())
+print("Median: ", df.age.median())
 
 # Resting Blood Pressure In mmHg
 fig = plt.figure(figsize = (12, 12))
@@ -361,7 +368,7 @@ print("Resting Blood Pressure Column Skewness & Kurtosis")
 print("Skewness: ", round(skew(df["trestbps"]), 3))
 print("Kurtosis: ", round(kurtosis(df["trestbps"]), 3))
 # General Title
-fig.suptitle("Resting Blood Pressure Column Distribution", fontweight = "bold", fontsize = 16, 
+fig.suptitle("Resting Blood Pressure Distribution", fontweight = "bold", fontsize = 16, 
 fontfamily = 'sans-serif', color = "black")
 fig.subplots_adjust(top = 0.9)
 # Histogram
@@ -378,12 +385,12 @@ sns.boxplot(data = df, y = 'trestbps',  linewidth = 1.5, boxprops = dict(alpha =
 plt.ylabel('Resting Blood Pressure', fontweight = "regular", fontsize = 11, fontfamily = 'sans-serif', 
             color = "black")
 plt.show()
-# Min, Max And Average Values
+# Min, Max, Mean and Median Values
 print('The Minumum, Maximum And Average Values: ')
-print("Minimum: ", min(df.restecg))
-print("Maximum: ", max(df.restecg))
-print("Average: ", df.restecg.mean())
-
+print("Minimum: ", min(df.trestbps))
+print("Maximum: ", max(df.trestbps))
+print("Average: ", df.trestbps.mean())
+print("Median: ", df.trestbps.median())
 
 # Serum Cholestoral in mg/dl
 fig = plt.figure(figsize = (12, 12))
@@ -392,7 +399,7 @@ print("Serum Cholestoral Column Skewness & Kurtosis")
 print("Skewness: ", round(skew(df["chol"]), 3))
 print("Kurtosis: ", round(kurtosis(df["chol"]), 3))
 # General Title
-fig.suptitle("Serum Cholestoral Column Distribution", fontweight = "bold", fontsize = 16, fontfamily = 'sans-serif',
+fig.suptitle("Serum Cholestoral Distribution", fontweight = "bold", fontsize = 16, fontfamily = 'sans-serif',
             color = "black")
 fig.subplots_adjust(top = 0.9)
 # Histogram
@@ -410,19 +417,20 @@ plt.ylabel('Serum Cholestoral', fontweight = 'regular', fontsize = 11, fontfamil
             color = "black")
 plt.show()
 # Min, Max And Average Values
-print('The Minumum, Maximum And Average Values: ')
+print('The Minumum, Maximum, Mean And Median Values: ')
 print("Minimum: ", min(df.chol))
 print("Maximum: ", max(df.chol))
 print("Average: ", df.chol.mean())
+print("Median: ", df.chol.median())
 
 # Maximum Heart Rate
 fig = plt.figure(figsize = (12, 12))
 # Skewness & Kurtosis
-print("Maximum Heart Rate Column Skewness & Kurtosis")
+print("Maximum Heart Rate Colum Skewness & Kurtosis")
 print("Skewness: ", round(skew(df["thalach"]), 3))
 print("Kurtosis: ", round(kurtosis(df["thalach"]), 3))
 # General Title
-fig.suptitle("Maximum Heart Rate Column Distribution", fontweight = "bold", fontsize = 16, 
+fig.suptitle("Maximum Heart Rate Distribution", fontweight = "bold", fontsize = 16, 
             fontfamily = 'sans-serif', color = "black")
 fig.subplots_adjust(top = 0.9)
 # Histogram
@@ -440,10 +448,11 @@ plt.ylabel('Maximum Heart Rate', fontweight = 'regular', fontsize = 11,
             fontfamily = 'sans-serif', color = "black")
 plt.show()
 # Min, Max And Average Values
-print('The Minumum, Maximum And Average Values: ')
+print('The Minumum, Maximum, Mean And Median Values: ')
 print("Minimum: ", min(df.thalach))
 print("Maximum: ", max(df.thalach))
 print("Average: ", df.thalach.mean())
+print("Median: ", df.thalach.median())
 
 # Old Peak
 fig = plt.figure(figsize = (12, 12))
@@ -452,7 +461,7 @@ print("Old Peak Column Skewness & Kurtosis")
 print("Skewness: ", round(skew(df["oldpeak"]), 3))
 print("Kurtosis: ", round(kurtosis(df["oldpeak"]), 3))
 # General Title
-fig.suptitle("Old Peak Column Distribution", fontweight = "bold", fontsize = 16, fontfamily = 'sans-serif',
+fig.suptitle("Old Peak Distribution", fontweight = "bold", fontsize = 16, fontfamily = 'sans-serif',
             color = "black")
 fig.subplots_adjust(top = 0.9)
 # Histogram
@@ -468,15 +477,16 @@ sns.boxplot(data = df, y = 'oldpeak',  linewidth = 1.5, boxprops = dict(alpha = 
 plt.ylabel('Old Peak', fontweight = 'regular', fontsize = 11, fontfamily = 'sans-serif', color = "black")
 plt.show()
 # Min, Max And Average Values
-print('The Minumum, Maximum And Average Values: ')
+print('The Minumum, Maximum, Mean And Median Values: ')
 print("Minimum: ", min(df.oldpeak))
 print("Maximum: ", max(df.oldpeak))
 print("Average: ", df.oldpeak.mean())
+print("Median: ", df.oldpeak.median())
 
 # EDA
 
 # Heart Disease Distribution Based On Gender
-labels = ["False", "True"]
+labels = ["No Disease", "Disease"]
 label_gender = np.array([0, 1])
 label_gender2 = ["Female", "Male"]
 colors = ["#CD919E", "#CDC9C9"]
@@ -489,7 +499,7 @@ for rect in ax.patches:
         horizontalalignment = "center", fontsize = 10)
 plt.suptitle("Heart Disease Distribution Based On Gender", fontweight = "heavy",
         fontsize = 16, fontfamily = "sans-serif", color = "black")
-plt.title("Female tend to have heart disease compared to Male", fontsize = 10, fontfamily = "sans-serif",
+plt.title("Male tend to have heart disease compared to Female", fontsize = 10, fontfamily = "sans-serif",
         loc = "left", color = "black")
 plt.tight_layout(rect = [0, 0.04, 1, 1.025])
 plt.xlabel('Gender', fontfamily = "sans-serif", fontweight = "bold", color = "black")
@@ -501,8 +511,10 @@ plt.legend(labels = labels, title = "Target", fontsize = 8, title_fontsize = 9, 
 plt.show()
 
 # Heart Disease Distribution Based On Total Major Vessels
-labels = ["False", "True"]
+labels = ["No Disease", "Disease"]
 colors = ["#CD919E", "#CDC9C9"]
+
+# Bar Chart
 ax = pd.crosstab(df.ca, df.target).plot(kind = "barh", figsize = (8, 5),color = colors, 
         edgecolor = "black", alpha = 0.85)
 for rect in ax.patches:
@@ -512,7 +524,7 @@ for rect in ax.patches:
         verticalalignment = "center")
 plt.suptitle("Heart Disease Distribution Based On Total Major Vessels", fontweight = "heavy",
         fontsize = 16, fontfamily = "sans-serif", color = "black", x = 0.069, y =0.98, ha = "left")
-plt.title("People with 0 and 4 major vessels tend to have heart diseases while People who have a number of vessels between 1 to 3 tend not to have heart diseases", 
+plt.title("People with 0 major vessels tend to have heart diseases while People who have a number of vessels between 1 to 3 tend not to have heart diseases", 
         fontsize = 10, fontfamily = "sans-serif", loc = "left", color = "black")
 plt.tight_layout(rect = [0, 0.04, 1, 1.025])
 plt.xlabel('Total', fontfamily = "sans-serif", fontweight = "bold", color = "black")
@@ -524,20 +536,65 @@ plt.legend(labels = labels, title = "Target", fontsize = 8, title_fontsize = 9, 
         frameon = True)
 plt.show()
 
-# Heart Disease Distribution Based On Age
-plt.figure(figsize = (10, 8))
-plt.suptitle("Heart Disease Distribution Scatter PLot Based On Age", fontweight = "heavy",
-        fontsize = 16, fontfamily = "sans-serif", color = "black", x = 0.48, y =0.98)
-plt.title("", 
-        fontsize = 10, fontfamily = "sans-serif", loc = "left", color = "black")
-plt.tight_layout(rect = [0, 0.04, 1, 1.01])
-# Scatter Plot
-plt.scatter(x = df.age[df.target == 0], y = df.thalach[(df.target == 0)], c = "#483D8B")
-plt.scatter(x = df.age[df.target == 1], y = df.thalach[(df.target == 1)], c = "#292421")
-plt.legend(["False", "True"], title = "Type", fontsize = 7, title_fontsize = 8, loc = "upper right", 
-         frameon = "True")
-plt.xlabel("Age", fontweight = "bold", fontsize = 11, fontfamily = "sans-serif", color = "black")
-plt.ylabel("Max. Heart Rate", fontweight = "bold", fontsize = 11, fontfamily = "sans-serif", color = "black")
-plt.ticklabel_format(style = "plain", axis = "both")
-plt.grid(axis = "both", alpha = 0.4, lw = 0.5)
+# Heart Disease Distribution Based On Chest Pain
+labels = ["No Disease", "Disease"]
+label_cp = np.array([0, 1, 2, 3])
+label_cp2 = ["Asymptomatic", "Atypical Angina", "Non-Anginal Pain", "Typical Angina"]
+colors = ["#CD919E", "#CDC9C9"]
+
+# Bar Chart
+ax = pd.crosstab(df.cp, df.target).plot(kind = 'bar', figsize = (8, 5), color = colors,
+        edgecolor = "black", alpha = 0.85)
+for rect in ax.patches:
+        ax.text(rect.get_x() + rect.get_width()/2, rect.get_height() + 1.25, rect.get_height(),
+        horizontalalignment = "center", fontsize = 10)
+plt.suptitle("Heart Disease Distribution Based On Chest Pain", fontweight = "heavy",
+        fontsize = 16, fontfamily = "sans-serif", color = "black")
+plt.tight_layout(rect = [0, 0.04, 1, 1.025])
+plt.xlabel('Chest Pain', fontfamily = "sans-serif", fontweight = "bold", color = "black")
+plt.ylabel('Total', fontfamily = "sans-serif", fontweight = "bold", color = "black")
+plt.xticks(label_cp, label_cp2, rotation = 0)
+plt.grid(axis = "y", alpha = 0.4)
+plt.grid(axis = "x", alpha = 0)
+plt.legend(labels = labels, title = "Target", fontsize = 8, title_fontsize = 9, loc = "upper right",
+        frameon = True)
+plt.show()
+
+# Heart Disease Distribution Based On Fasting Blood Sugar
+labels = ["No Disease", "Disease"]
+label_fbs = np.array([0, 1])
+label_fbs2 = ["<120mg/dl", ">120mg/dl"]
+colors = ["#CD919E", "#CDC9C9"]
+
+# Bar Chart
+ax = pd.crosstab(df.fbs, df.target).plot(kind = 'bar', figsize = (8, 5), color = colors,
+        edgecolor = "black", alpha = 0.85)
+for rect in ax.patches:
+        ax.text(rect.get_x() + rect.get_width()/2, rect.get_height() + 1.25, rect.get_height(),
+        horizontalalignment = "center", fontsize = 10)
+plt.suptitle("Heart Disease Distribution Based On Fasting Blood Sugar", fontweight = "heavy",
+        fontsize = 16, fontfamily = "sans-serif", color = "black")
+plt.tight_layout(rect = [0, 0.04, 1, 1.025])
+plt.xlabel('Fasting Blood Sugar', fontfamily = "sans-serif", fontweight = "bold", color = "black")
+plt.ylabel('Total', fontfamily = "sans-serif", fontweight = "bold", color = "black")
+plt.xticks(label_fbs, label_fbs2, rotation = 0)
+plt.grid(axis = "y", alpha = 0.4)
+plt.grid(axis = "x", alpha = 0)
+plt.legend(labels = labels, title = "Target", fontsize = 8, title_fontsize = 9, loc = "upper right",
+        frameon = True)
+plt.show()
+
+
+# CORRELATION
+# Correlation Matrix
+corr_matrix = round(df.corr(), 3)
+print("Correlation Matrix: ")
+print(corr_matrix)
+
+# Correlation Map / Heat Map
+plt.rcParams['figure.figsize'] =(15, 10)
+sns.heatmap(df.corr(), annot=True, cmap='Blues', linewidths=5)
+plt.suptitle('Correlation Between Variables', fontweight='heavy', 
+             x=0.03, y=0.98, ha = "left", fontsize='16', fontfamily='sans-serif', 
+             color= "black")
 plt.show()
